@@ -2,6 +2,7 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { logoutUser } from "../api/authApi";
 import { usePermission } from "../context/PermissionContext";
+import { getOrganizationDetails } from "../api/organizationApi";
 import logo from "../assets/Logo1.png";
 
 export default function Navbar({ title }) {
@@ -11,7 +12,22 @@ export default function Navbar({ title }) {
     const [isOpen, setIsOpen] = useState(false);
     const [isProductionOpen, setIsProductionOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [orgLogo, setOrgLogo] = useState("");
     const { hasPermission } = usePermission();
+
+    useEffect(() => {
+        const fetchLogo = async () => {
+            try {
+                const res = await getOrganizationDetails();
+                if (res.data?.data?.logo) {
+                    setOrgLogo(res.data.data.logo);
+                }
+            } catch (err) {
+                console.error("Failed to load organization logo in navbar:", err);
+            }
+        };
+        fetchLogo();
+    }, []);
 
     useEffect(() => {
         const handleOutsideClick = (e) => {
@@ -171,6 +187,15 @@ export default function Navbar({ title }) {
             color: "bg-orange-50 text-orange-600 border border-orange-100/50",
             activeColor: "bg-orange-100 text-orange-700",
             desc: "Manage process names and active logs"
+        },
+        {
+            name: "Organization Details Master",
+            path: "/admin/organization-details",
+            masterKey: "organization_details",
+            icon: "fa-solid fa-building",
+            color: "bg-indigo-50 text-indigo-600 border border-indigo-100/50",
+            activeColor: "bg-indigo-100 text-indigo-700",
+            desc: "Manage organization profile, logo, address & GST details"
         }
     ];
 
@@ -188,7 +213,7 @@ export default function Navbar({ title }) {
             {/* First Row */}
             <div className="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <img src={logo} alt="Elcen Logo" className="h-24 w-auto" />
+                    <img src={orgLogo || logo} alt="Elcen Logo" className="h-24 w-auto" />
                 </div>
 
                 <div className="flex items-center gap-6">

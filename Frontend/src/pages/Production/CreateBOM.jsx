@@ -323,16 +323,16 @@ export default function CreateBOM() {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-slate-200 bg-slate-50/50">
-                      <th className="py-2.5 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider w-1/2">
+                      <th className="py-2.5 px-3 text-sm font-semibold text-slate-700 w-1/2">
                         Raw Material Name
                       </th>
-                      <th className="py-2.5 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider w-1/4">
+                      <th className="py-2.5 px-3 text-sm font-semibold text-slate-700 w-1/4">
                         Quantity
                       </th>
-                      <th className="py-2.5 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider w-1/6">
+                      <th className="py-2.5 px-3 text-sm font-semibold text-slate-700 w-1/6">
                         Unit
                       </th>
-                      <th className="py-2.5 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider w-12 text-center"></th>
+                      <th className="py-2.5 px-3 text-sm font-semibold text-slate-700 w-12 text-center"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -360,12 +360,12 @@ export default function CreateBOM() {
                             placeholder="0.0000"
                             value={row.quantity}
                             onChange={(e) => handleRawMaterialChange(idx, "quantity", e.target.value)}
-                            className={`${inputCls} font-mono`}
+                            className={inputCls}
                             required
                           />
                         </td>
                         <td className="py-2 px-1">
-                          <div className="bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 font-semibold text-sm w-full font-mono text-center">
+                          <div className="bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 font-semibold text-sm w-full text-center">
                             {row.unitName}
                           </div>
                         </td>
@@ -428,13 +428,13 @@ export default function CreateBOM() {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-slate-200 bg-slate-50/50">
-                      <th className="py-2.5 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider w-3/5">
+                      <th className="py-2.5 px-3 text-sm font-semibold text-slate-700 w-3/5">
                         Process Name
                       </th>
-                      <th className="py-2.5 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider w-1/3 text-right">
+                      <th className="py-2.5 px-3 text-sm font-semibold text-slate-700 w-1/3">
                         Std Cycle Time (sec)
                       </th>
-                      <th className="py-2.5 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider w-12 text-center"></th>
+                      <th className="py-2.5 px-3 text-sm font-semibold text-slate-700 w-12 text-center"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -462,7 +462,7 @@ export default function CreateBOM() {
                             placeholder="e.g. 15"
                             value={row.standardCycleTime}
                             onChange={(e) => handleProcessChange(idx, "standardCycleTime", e.target.value)}
-                            className={`${inputCls} font-mono text-right`}
+                            className={inputCls}
                             required
                           />
                         </td>
@@ -498,7 +498,7 @@ export default function CreateBOM() {
                         <td className="py-3 px-3 text-indigo-900 font-bold text-sm text-left">
                           Total Cycle Time
                         </td>
-                        <td className="py-3 px-3 text-indigo-700 font-mono text-sm text-right pr-6">
+                        <td className="py-3 px-3 text-indigo-700 text-sm text-left">
                           {totalCycleTime} seconds
                         </td>
                         <td className="py-3 px-1"></td>
