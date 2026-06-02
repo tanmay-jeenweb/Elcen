@@ -221,7 +221,7 @@ export default function BOMMaster() {
       <main className="flex-1 flex flex-col w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <DataTable
           tableId="bom_master"
-          title="Bill of Materials (BOM) Master"
+          title="Bill of Materials (BOM)"
           data={boms}
           columns={columns}
           loading={loading}
