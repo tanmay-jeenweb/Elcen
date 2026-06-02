@@ -272,7 +272,14 @@ export default function EditVendor() {
                         <div className="border-b border-slate-200 bg-slate-50/50 px-6 py-4">
                             <h2 className="text-lg font-semibold text-slate-800">3. Address</h2>
                         </div>
-                        <div className="p-6 space-y-4">
+                        <div className="p-6 space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>GST No</label>
+                                    <input type="text" name="gst_no" value={formData.gst_no} onChange={handleChange} className={`${inputCls} uppercase`} placeholder="e.g. 22AAAAA0000A1Z5" />
+                                </div>
+                            </div>
+                            <hr className="border-slate-200" />
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div className="md:col-span-3 space-y-1.5">
                                     <label className="block text-xs font-semibold text-slate-600">Address</label>
@@ -383,13 +390,6 @@ export default function EditVendor() {
                             <h2 className="text-lg font-semibold text-slate-800">5. License and Docs</h2>
                         </div>
                         <div className="p-6 space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-1.5">
-                                    <label className={labelCls}>GST No</label>
-                                    <input type="text" name="gst_no" value={formData.gst_no} onChange={handleChange} className={`${inputCls} uppercase`} placeholder="e.g. 22AAAAA0000A1Z5" />
-                                </div>
-                            </div>
-                            <hr className="border-slate-200" />
                             <div>
                                 <h3 className="text-sm font-bold text-slate-800 mb-4">Additional Documents</h3>
                                 <div className="flex flex-col md:flex-row gap-4 items-end">
