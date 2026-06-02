@@ -5,28 +5,20 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const MASTERS = [
-  { key: "user_type",           label: "User Type Master" },
-  { key: "location_type",       label: "Location Type Master" },
-  { key: "location",            label: "Location Master" },
-  { key: "machine_type",        label: "Machine Type Master" },
-  { key: "machine",             label: "Machine Master" },
-  { key: "mould",               label: "Mould Master" },
-  { key: "material_group",      label: "Material Group Master" },
-
-  { key: "unit",                label: "Unit Master" },
-  { key: "material",            label: "Material Master" },
-  { key: "raw_material_type",   label: "Raw Material Type Master" },
-  { key: "raw_material",        label: "Raw Material Master" },
-  { key: "operator_type",       label: "Operator Type Master" },
-  { key: "operator",            label: "Operator Master" },
-  { key: "reason_for_delay_type", label: "Reason For Delay Type Master" },
-  { key: "reason_for_delay",    label: "Reason For Delay Master" },
-  { key: "document",            label: "Document Master" },
-  { key: "vendor",              label: "Vendor Master" },
-  { key: "customer",            label: "Customer Master" },
-  { key: "reason",              label: "Reason Master" },
-  { key: "sub_sd_reason",       label: "Sub S/D Reason Master" },
-  { key: "process_master",      label: "Process Master" },
+  { key: "user_type",             label: "User Type Master" },
+  { key: "location_type",         label: "Location Type Master" },
+  { key: "location",              label: "Location Master" },
+  { key: "material_group",        label: "Material Group Master" },
+  { key: "unit",                  label: "Unit Master" },
+  { key: "material",              label: "Material Master" },
+  { key: "operator_type",         label: "Operator Type Master" },
+  { key: "operator",              label: "Operator Master" },
+  { key: "document",              label: "Document Master" },
+  { key: "vendor",                label: "Vendor Master" },
+  { key: "customer",              label: "Customer Master" },
+  { key: "process_master",        label: "Process Master" },
+  { key: "bill_of_material",      label: "Bill of Material Master" },
+  { key: "organization_details",  label: "Organization Details Master" },
 ];
 
 const PERMS = ["canRead", "canWrite", "canUpdate", "canDelete"];
