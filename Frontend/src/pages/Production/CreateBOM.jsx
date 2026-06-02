@@ -265,10 +265,10 @@ export default function CreateBOM() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Section 1: Name */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <h2 className="text-base font-bold text-[#043464] border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+            {/* <h2 className="text-base font-bold text-[#043464] border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
               <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-50 text-indigo-700 text-xs font-bold">1</span>
               Finished / Semi-Finished Product
-            </h2>
+            </h2> */}
             <div className="max-w-md">
               <label className={labelCls}>
                 Product Name <span className="text-rose-500">*</span>
