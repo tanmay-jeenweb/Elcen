@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { loginUser } from "../api/authApi";
 import { getDeviceId } from "../utils/device";
+import { getOrganizationDetails } from "../api/organizationApi";
 import loginBg from "../assets/login_bg.png";
 import logo from "../assets/Logo1.png"
 import jwlogo from "../assets/jwLogo.jpeg"
@@ -12,6 +13,21 @@ export default function Login() {
     const [form, setForm] = useState({ username: "", password: "" });
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [orgLogo, setOrgLogo] = useState("");
+
+    useEffect(() => {
+        const fetchLogo = async () => {
+            try {
+                const res = await getOrganizationDetails();
+                if (res.data?.data?.logo) {
+                    setOrgLogo(res.data.data.logo);
+                }
+            } catch (err) {
+                console.error("Failed to load organization logo:", err);
+            }
+        };
+        fetchLogo();
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -81,7 +97,7 @@ export default function Login() {
                         {/* Logo */}
                         <div className="flex flex-col items-center mb-4">
                             <img
-                                src={logo}
+                                src={orgLogo || logo}
                                 alt="Elcen Logo"
                                 className="h-32 w-auto"
                             />

@@ -60,14 +60,18 @@ const upsertOrganizationController = async (req, res) => {
         // Fetch updated data for the audit log
         const afterData = await getOrganizationDetails();
 
+        // Strip the massive base64 logo string from the audit logs to prevent database bloat and column overflow errors
+        const beforeDataForAudit = beforeData ? { ...beforeData, logo: beforeData.logo ? '[Base64 Logo Image]' : null } : null;
+        const afterDataForAudit = afterData ? { ...afterData, logo: afterData.logo ? '[Base64 Logo Image]' : null } : null;
+
         await createAuditLog(
             addedBy,
             req.user?.name || req.user?.username || 'Unknown',
             deviceId,
             'Organization Details Master',
             result.action === 'created' ? 'created' : 'updated',
-            beforeData,
-            afterData
+            beforeDataForAudit,
+            afterDataForAudit
         );
 
         res.status(200).json({

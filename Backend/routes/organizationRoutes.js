@@ -7,7 +7,7 @@ const { verifyToken, verifyPermission } = require('../middleware/authMiddleware.
 
 const router = express.Router();
 
-router.get('/', verifyToken, verifyPermission('organization_details', 'read'), getOrganizationController);
+router.get('/', getOrganizationController);
 router.post('/', verifyToken, verifyPermission('organization_details', 'write'), upsertOrganizationController);
 
 module.exports = router;

@@ -148,7 +148,7 @@ export default function OrganizationDetails() {
     <div className="flex-1 bg-slate-50 font-sans text-slate-900 min-h-screen pb-12">
       <Navbar title="ERP Admin" />
 
-      <main className="mx-auto py-8 px-4 sm:px-6 lg:px-8 max-w-4xl">
+      <main className="mx-auto py-8 px-4 sm:px-6 lg:px-8 ">
         {/* Page header */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-slate-900">
