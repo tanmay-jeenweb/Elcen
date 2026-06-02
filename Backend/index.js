@@ -22,6 +22,7 @@ const operatorTypeRoutes = require("./routes/operatorTypeRoutes.js");
 const operatorRoutes = require("./routes/operatorRoutes.js");
 const processMasterRoutes = require("./routes/processMasterRoutes.js");
 const bomRoutes = require("./routes/bomRoutes.js");
+const organizationRoutes = require("./routes/organizationRoutes.js");
 
 // Model Initializations
 const { initUserModel } = require("./models/userModel.js");
@@ -41,6 +42,7 @@ const { createOperatorTypesTable } = require("./models/operatorTypeModel.js");
 const { createOperatorsTable, ensureOperatorColumns } = require("./models/operatorModel.js");
 const { createProcessMastersTable } = require("./models/processMasterModel.js");
 const { createBOMTables } = require("./models/bomModel.js");
+const { createOrganizationTable } = require("./models/organizationModel.js");
 
 const app = express();
 
@@ -87,6 +89,7 @@ app.use(["/api/operator-types", "/operator-types"], operatorTypeRoutes);
 app.use(["/api/operators", "/operators"], operatorRoutes);
 app.use(["/api/process-masters", "/process-masters"], processMasterRoutes);
 app.use(["/api/boms", "/boms"], bomRoutes);
+app.use(["/api/organization-details", "/organization-details"], organizationRoutes);
 
 // Global 404 handler
 app.use((req, res) => {
@@ -127,6 +130,7 @@ const startServer = async () => {
         await ensureOperatorColumns();
         await createProcessMastersTable();
         await createBOMTables();
+        await createOrganizationTable();
 
         console.log("All database tables are initialized and ready.");
 

@@ -171,6 +171,15 @@ export default function Navbar({ title }) {
             color: "bg-orange-50 text-orange-600 border border-orange-100/50",
             activeColor: "bg-orange-100 text-orange-700",
             desc: "Manage process names and active logs"
+        },
+        {
+            name: "Organization Details Master",
+            path: "/admin/organization-details",
+            masterKey: "organization_details",
+            icon: "fa-solid fa-building",
+            color: "bg-indigo-50 text-indigo-600 border border-indigo-100/50",
+            activeColor: "bg-indigo-100 text-indigo-700",
+            desc: "Manage organization profile, logo, address & GST details"
         }
     ];
 

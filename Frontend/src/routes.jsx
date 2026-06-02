@@ -26,6 +26,7 @@ import MaterialMaster from "./pages/Item/MaterialMaster";
 import CreateMaterial from "./pages/Item/CreateMaterial";
 import BOMMaster from "./pages/Production/BOMMaster";
 import CreateBOM from "./pages/Production/CreateBOM";
+import OrganizationDetails from "./pages/admin/organization/OrganizationDetails";
 import Reports from "./pages/Reports";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -178,6 +179,10 @@ export default function AppRoutes() {
             </Route>
             <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="bill_of_material" requiredAction="write" />}>
                 <Route path="/admin/production/bom/create" element={<CreateBOM />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="organization_details" requiredAction="read" />}>
+                <Route path="/admin/organization-details" element={<OrganizationDetails />} />
             </Route>
 
             <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="document" requiredAction="read" />}>

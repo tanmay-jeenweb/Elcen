@@ -25,6 +25,7 @@ const MASTERS = [
     { key: 'sub_sd_reason', label: 'Sub S/D Reason Master' },
     { key: 'process_master', label: 'Process Master' },
     { key: 'bill_of_material', label: 'Bill of Material Master' },
+    { key: 'organization_details', label: 'Organization Details Master' },
 ];
 
 // ─── Table creation ──────────────────────────────────────────────────────────
