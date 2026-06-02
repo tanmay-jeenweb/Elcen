@@ -85,9 +85,15 @@ function VendorViewModal({ vendor, onClose }) {
                     </Section>
 
                     {/* 3. Addresses */}
-                    {addresses.length > 0 && (
-                        <div className="mb-6">
-                            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 pb-2 border-b border-slate-100">3. Addresses</h3>
+                    <div className="mb-6">
+                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 pb-2 border-b border-slate-100">3. Address</h3>
+                        <div className="grid grid-cols-2 gap-x-8 gap-y-3 mb-4">
+                            <div>
+                                <p className="text-xs text-slate-400 font-medium mb-0.5">GST No</p>
+                                <p className="text-sm text-slate-800 font-mono font-medium">{vendor.gst_no || <span className="text-slate-300 font-sans">—</span>}</p>
+                            </div>
+                        </div>
+                        {addresses.length > 0 && (
                             <div className="space-y-3">
                                 {addresses.map((addr, i) => (
                                     <div key={i} className="bg-slate-50 rounded-lg p-3 text-sm">
@@ -96,8 +102,8 @@ function VendorViewModal({ vendor, onClose }) {
                                     </div>
                                 ))}
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
 
                     {/* 4. Contact Persons */}
                     {contacts.length > 0 && (
@@ -126,15 +132,9 @@ function VendorViewModal({ vendor, onClose }) {
                         </div>
                     )}
 
-                    {/* 5. GST / Documents */}
+                    {/* 5. License & Docs */}
                     <div className="mb-6">
                         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 pb-2 border-b border-slate-100">5. License & Docs</h3>
-                        <div className="grid grid-cols-2 gap-x-8 gap-y-3 mb-4">
-                            <div>
-                                <p className="text-xs text-slate-400 font-medium mb-0.5">GST No</p>
-                                <p className="text-sm text-slate-800 font-mono font-medium">{vendor.gst_no || <span className="text-slate-300 font-sans">—</span>}</p>
-                            </div>
-                        </div>
                         {documents.length > 0 && (
                             <div className="border border-slate-200 rounded-lg overflow-hidden">
                                 <table className="min-w-full divide-y divide-slate-200">
