@@ -162,22 +162,22 @@ export default function Navbar({ title }) {
             desc: "Manage customer details and related documents"
         },
         {
-            name: "Operator Type Master",
-            path: "/admin/operator-types",
-            masterKey: "operator_type",
+            name: "Worker/Employee Type Master",
+            path: "/admin/worker-employee-types",
+            masterKey: "worker_employee_type",
             icon: "fa-solid fa-id-badge",
             color: "bg-indigo-50 text-indigo-600 border border-indigo-100/50",
             activeColor: "bg-indigo-100 text-indigo-700",
-            desc: "Configure operator types and categories"
+            desc: "Configure worker/employee types and categories"
         },
         {
-            name: "Operator Master",
-            path: "/admin/operators",
-            masterKey: "operator",
+            name: "Worker/Employee Master",
+            path: "/admin/worker-employees",
+            masterKey: "worker_employee",
             icon: "fa-solid fa-user-gear",
             color: "bg-cyan-50 text-cyan-600 border border-cyan-100/50",
             activeColor: "bg-cyan-100 text-cyan-700",
-            desc: "Manage operator details and active status"
+            desc: "Manage worker/employee details and active status"
         },
         {
             name: "Process Master",

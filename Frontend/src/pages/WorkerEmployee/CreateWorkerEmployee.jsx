@@ -2,22 +2,22 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import {
-  createOperator,
-  updateOperator,
-  getOperatorById,
-} from "../../api/operatorApi";
-import { getOperatorTypes } from "../../api/operatorTypeApi";
+  createWorkerEmployee,
+  updateWorkerEmployee,
+  getWorkerEmployeeById,
+} from "../../api/workerEmployeeApi";
+import { getWorkerEmployeeTypes } from "../../api/workerEmployeeTypeApi";
 import toast from "react-hot-toast";
 
 const emptyForm = {
-  operatorCode: "",
-  operatorName: "",
+  workerEmployeeCode: "",
+  workerEmployeeName: "",
   dateOfJoining: "",
-  operatorTypeId: "",
+  workerEmployeeTypeId: "",
   information: "",
 };
 
-export default function CreateOperator() {
+export default function CreateWorkerEmployee() {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = Boolean(id);
@@ -27,47 +27,46 @@ export default function CreateOperator() {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(isEditMode);
 
-  // ── Load dropdowns + operator details if in edit mode ─────────────
   useEffect(() => {
-    const fetchOperatorTypes = async () => {
+    const fetchWorkerEmployeeTypes = async () => {
       try {
-        const res = await getOperatorTypes();
+        const res = await getWorkerEmployeeTypes();
         setTypes(res.data.data || []);
       } catch (err) {
-        console.error("Failed to load operator types dropdown data", err);
-        toast.error("Unable to load operator types.");
+        console.error("Failed to load worker/employee types dropdown data", err);
+        toast.error("Unable to load worker/employee types.");
       }
     };
 
-    const fetchOperator = async () => {
+    const fetchWorkerEmployee = async () => {
       try {
-        const res = await getOperatorById(id);
-        const op = res.data.data;
-        if (op) {
+        const res = await getWorkerEmployeeById(id);
+        const we = res.data.data;
+        if (we) {
           let formattedDate = "";
-          if (op.date_of_joining) {
-            formattedDate = new Date(op.date_of_joining).toISOString().split("T")[0];
+          if (we.date_of_joining) {
+            formattedDate = new Date(we.date_of_joining).toISOString().split("T")[0];
           }
 
           setForm({
-            operatorCode: op.operator_code || "",
-            operatorName: op.operator_name || "",
+            workerEmployeeCode: we.worker_employee_code || "",
+            workerEmployeeName: we.worker_employee_name || "",
             dateOfJoining: formattedDate,
-            operatorTypeId: op.operator_type_id ? String(op.operator_type_id) : "",
-            information: op.information || "",
+            workerEmployeeTypeId: we.worker_employee_type_id ? String(we.worker_employee_type_id) : "",
+            information: we.information || "",
           });
         }
       } catch (err) {
-        console.error("Failed to load operator details", err);
-        toast.error("Unable to load operator details.");
-        navigate("/admin/operators");
+        console.error("Failed to load worker/employee details", err);
+        toast.error("Unable to load worker/employee details.");
+        navigate("/admin/worker-employees");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchOperatorTypes();
-    if (isEditMode) fetchOperator();
+    fetchWorkerEmployeeTypes();
+    if (isEditMode) fetchWorkerEmployee();
   }, [id, isEditMode, navigate]);
 
   const handleChange = (e) => {
@@ -77,37 +76,37 @@ export default function CreateOperator() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.operatorCode.trim()) {
-      toast.error("Operator code is required.");
+    if (!form.workerEmployeeCode.trim()) {
+      toast.error("Worker/Employee code is required.");
       return;
     }
-    if (!form.operatorName.trim()) {
-      toast.error("Operator name is required.");
+    if (!form.workerEmployeeName.trim()) {
+      toast.error("Worker/Employee name is required.");
       return;
     }
 
     setSaving(true);
     try {
       const payload = {
-        operatorCode: form.operatorCode.trim(),
-        operatorName: form.operatorName.trim(),
+        workerEmployeeCode: form.workerEmployeeCode.trim(),
+        workerEmployeeName: form.workerEmployeeName.trim(),
         dateOfJoining: form.dateOfJoining || null,
-        operatorTypeId: form.operatorTypeId ? Number(form.operatorTypeId) : null,
+        workerEmployeeTypeId: form.workerEmployeeTypeId ? Number(form.workerEmployeeTypeId) : null,
         information: form.information.trim() || null,
       };
 
       if (isEditMode) {
-        await updateOperator(id, payload);
-        toast.success("Operator updated successfully");
+        await updateWorkerEmployee(id, payload);
+        toast.success("Worker/Employee updated successfully");
       } else {
-        await createOperator(payload);
-        toast.success(`Operator '${payload.operatorCode}' created successfully`);
+        await createWorkerEmployee(payload);
+        toast.success(`Worker/Employee '${payload.workerEmployeeCode}' created successfully`);
       }
-      navigate("/admin/operators");
+      navigate("/admin/worker-employees");
     } catch (err) {
-      console.error("Failed to save operator", err);
+      console.error("Failed to save worker/employee", err);
       const serverMessage = err?.response?.data?.message;
-      toast.error(serverMessage || "Unable to save operator. Please try again.");
+      toast.error(serverMessage || "Unable to save worker/employee. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -126,20 +125,20 @@ export default function CreateOperator() {
         <div className="mb-6 flex items-center justify-between w-full">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">
-              {isEditMode ? "Edit Operator" : "Create Operator"}
+              {isEditMode ? "Edit Worker/Employee" : "Create Worker/Employee"}
             </h1>
             <p className="text-slate-500 mt-1">
-              {isEditMode ? "Update configuration for this operator." : "Add a new operator to the system."}
+              {isEditMode ? "Update configuration for this worker/employee." : "Add a new worker/employee to the system."}
             </p>
           </div>
           <button
-            onClick={() => navigate("/admin/operators")}
+            onClick={() => navigate("/admin/worker-employees")}
             className="text-slate-500 hover:text-slate-700 font-medium text-sm flex items-center gap-1 transition-colors cursor-pointer"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
-            Back to Operator List
+            Back to Worker/Employee List
           </button>
         </div>
 
@@ -151,22 +150,22 @@ export default function CreateOperator() {
           <div className="w-full pb-20">
             <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="border-b border-slate-100 bg-slate-50/50 px-6 py-4">
-                <h2 className="text-lg font-semibold text-slate-800">Operator Details</h2>
+                <h2 className="text-lg font-semibold text-slate-800">Worker/Employee Details</h2>
               </div>
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Code */}
                   <div className="space-y-1">
                     <label className={labelCls}>
-                      Operator Code <span className="text-rose-500">*</span>
+                      Worker/Employee Code <span className="text-rose-500">*</span>
                     </label>
                     <input
                       type="text"
-                      name="operatorCode"
-                      value={form.operatorCode}
+                      name="workerEmployeeCode"
+                      value={form.workerEmployeeCode}
                       onChange={handleChange}
                       className={inputCls}
-                      placeholder="e.g. OP001"
+                      placeholder="e.g. WRK001"
                       required
                       autoFocus={!isEditMode}
                     />
@@ -175,12 +174,12 @@ export default function CreateOperator() {
                   {/* Name */}
                   <div className="space-y-1">
                     <label className={labelCls}>
-                      Operator Name <span className="text-rose-500">*</span>
+                      Worker/Employee Name <span className="text-rose-500">*</span>
                     </label>
                     <input
                       type="text"
-                      name="operatorName"
-                      value={form.operatorName}
+                      name="workerEmployeeName"
+                      value={form.workerEmployeeName}
                       onChange={handleChange}
                       className={inputCls}
                       placeholder="Enter full name"
@@ -195,28 +194,26 @@ export default function CreateOperator() {
                     <label className={labelCls}>Date of Joining</label>
                     <input
                       type="date"
-                      name="dateJoining"
+                      name="dateOfJoining"
                       value={form.dateOfJoining}
-                      onChange={(e) =>
-                        setForm((prev) => ({ ...prev, dateOfJoining: e.target.value }))
-                      }
+                      onChange={handleChange}
                       className={inputCls}
                     />
                   </div>
 
-                  {/* Operator Type */}
+                  {/* Worker/Employee Type */}
                   <div className="space-y-1">
-                    <label className={labelCls}>Operator Type</label>
+                    <label className={labelCls}>Worker/Employee Type</label>
                     <select
-                      name="operatorTypeId"
-                      value={form.operatorTypeId}
+                      name="workerEmployeeTypeId"
+                      value={form.workerEmployeeTypeId}
                       onChange={handleChange}
                       className={inputCls}
                     >
                       <option value="">— Select Type —</option>
                       {types.map((t) => (
                         <option key={t.id} value={t.id}>
-                          {t.operator_type_name}
+                          {t.worker_employee_type_name}
                         </option>
                       ))}
                     </select>
@@ -240,7 +237,7 @@ export default function CreateOperator() {
                 <div className="pt-6 flex justify-end gap-3 border-t border-slate-100">
                   <button
                     type="button"
-                    onClick={() => navigate("/admin/operators")}
+                    onClick={() => navigate("/admin/worker-employees")}
                     className="px-6 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors"
                   >
                     Cancel
@@ -250,7 +247,7 @@ export default function CreateOperator() {
                     disabled={saving}
                     className="bg-[#043464] text-white px-8 py-2.5 rounded-lg font-medium hover:bg-[#03274b] transition-colors duration-200 disabled:cursor-not-allowed disabled:bg-slate-400 shadow-sm cursor-pointer"
                   >
-                    {saving ? "Saving..." : isEditMode ? "Save Changes" : "Create Operator"}
+                    {saving ? "Saving..." : isEditMode ? "Save Changes" : "Create Worker/Employee"}
                   </button>
                 </div>
               </div>
