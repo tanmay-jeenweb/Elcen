@@ -8,8 +8,8 @@ const MASTERS = [
     { key: 'material_group', label: 'Material Group Master' },
     { key: 'unit', label: 'Unit Master' },
     { key: 'material', label: 'Material Master' },
-    { key: 'operator_type', label: 'Operator Type Master' },
-    { key: 'operator', label: 'Operator Master' },
+    { key: 'worker_employee_type', label: 'Worker/Employee Type Master' },
+    { key: 'worker_employee', label: 'Worker/Employee Master' },
     { key: 'document', label: 'Document Master' },
     { key: 'vendor', label: 'Vendor Master' },
     { key: 'customer', label: 'Customer Master' },
@@ -52,6 +52,19 @@ const createUserTypePermissionsTable = async () => {
     `;
     await db.execute(query);
     console.log("User type permissions table ready");
+
+    // Migrate existing operator permissions to worker_employee safely
+    try {
+        await db.execute("UPDATE IGNORE user_type_permissions SET master_name = 'worker_employee' WHERE master_name = 'operator'");
+        await db.execute("DELETE FROM user_type_permissions WHERE master_name = 'operator'");
+
+        await db.execute("UPDATE IGNORE user_type_permissions SET master_name = 'worker_employee_type' WHERE master_name = 'operator_type'");
+        await db.execute("DELETE FROM user_type_permissions WHERE master_name = 'operator_type'");
+        
+        console.log("✅ Permission keys migrated to worker_employee and worker_employee_type.");
+    } catch (err) {
+        console.error("Migration of user permissions failed:", err.message);
+    }
 };
 
 // ─── Permissions helpers ─────────────────────────────────────────────────────

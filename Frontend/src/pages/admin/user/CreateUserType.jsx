@@ -11,8 +11,8 @@ const MASTERS = [
   { key: "material_group",        label: "Material Group Master" },
   { key: "unit",                  label: "Unit Master" },
   { key: "material",              label: "Material Master" },
-  { key: "operator_type",         label: "Operator Type Master" },
-  { key: "operator",              label: "Operator Master" },
+  { key: "worker_employee_type",  label: "Worker/Employee Type Master" },
+  { key: "worker_employee",       label: "Worker/Employee Master" },
   { key: "document",              label: "Document Master" },
   { key: "vendor",                label: "Vendor Master" },
   { key: "customer",              label: "Customer Master" },
@@ -163,7 +163,7 @@ export default function CreateUserType() {
             </label>
             <input
               type="text"
-              placeholder="e.g. Supervisor, Operator, Manager"
+              placeholder="e.g. Supervisor, Technician, Manager"
               value={newTypeName}
               onChange={(e) => setNewTypeName(e.target.value)}
               required

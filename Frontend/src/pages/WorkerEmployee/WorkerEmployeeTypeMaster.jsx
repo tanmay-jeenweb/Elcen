@@ -1,11 +1,11 @@
 import { useEffect, useState, useMemo } from "react";
 import Navbar from "../../components/Navbar";
-import { createOperatorType, getOperatorTypes, updateOperatorType, deleteOperatorType } from "../../api/operatorTypeApi";
+import { createWorkerEmployeeType, getWorkerEmployeeTypes, updateWorkerEmployeeType, deleteWorkerEmployeeType } from "../../api/workerEmployeeTypeApi";
 import DataTable from "../../components/DataTable";
 import toast from "react-hot-toast";
 import { usePermission } from "../../context/PermissionContext";
 
-export default function OperatorTypeMaster() {
+export default function WorkerEmployeeTypeMaster() {
   const [types, setTypes] = useState([]);
   const [newName, setNewName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,11 +17,11 @@ export default function OperatorTypeMaster() {
   const loadTypes = async () => {
     setLoading(true);
     try {
-      const response = await getOperatorTypes();
+      const response = await getWorkerEmployeeTypes();
       setTypes(response.data.data || []);
     } catch (err) {
-      console.error("Failed to load operator types", err);
-      toast.error("Unable to load operator types. Please try again.");
+      console.error("Failed to load worker/employee types", err);
+      toast.error("Unable to load worker/employee types. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -34,21 +34,21 @@ export default function OperatorTypeMaster() {
   const handleAddType = async (event) => {
     event.preventDefault();
     if (!newName.trim()) {
-      toast.error("Enter a valid operator type name.");
+      toast.error("Enter a valid worker/employee type name.");
       return;
     }
 
     setSaving(true);
     try {
-      await createOperatorType({ operatorTypeName: newName.trim() });
+      await createWorkerEmployeeType({ workerEmployeeTypeName: newName.trim() });
       setNewName("");
       setShowAddModal(false);
       await loadTypes();
-      toast.success("Operator type added successfully");
+      toast.success("Worker/Employee type added successfully");
     } catch (err) {
-      console.error("Failed to add operator type", err);
+      console.error("Failed to add worker/employee type", err);
       const serverMessage = err?.response?.data?.message;
-      toast.error(serverMessage || "Unable to add operator type. Please try again.");
+      toast.error(serverMessage || "Unable to add worker/employee type. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -76,38 +76,38 @@ export default function OperatorTypeMaster() {
 
   const handleUpdateType = async (id) => {
     if (!editingName.trim()) {
-      toast.error("Enter a valid operator type name.");
+      toast.error("Enter a valid worker/employee type name.");
       return;
     }
 
     setSaving(true);
     try {
-      await updateOperatorType(id, { operatorTypeName: editingName.trim() });
-      toast.success("Operator type updated successfully");
+      await updateWorkerEmployeeType(id, { workerEmployeeTypeName: editingName.trim() });
+      toast.success("Worker/Employee type updated successfully");
       setEditingId(null);
       setEditingName("");
       await loadTypes();
     } catch (err) {
-      console.error("Failed to update operator type", err);
-      toast.error(err?.response?.data?.message || "Unable to update operator type.");
+      console.error("Failed to update worker/employee type", err);
+      toast.error(err?.response?.data?.message || "Unable to update worker/employee type.");
     } finally {
       setSaving(false);
     }
   };
 
   const handleDeleteType = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this operator type?")) {
+    if (!window.confirm("Are you sure you want to delete this worker/employee type?")) {
       return;
     }
 
     setSaving(true);
     try {
-      await deleteOperatorType(id);
-      toast.success("Operator type deleted successfully");
+      await deleteWorkerEmployeeType(id);
+      toast.success("Worker/Employee type deleted successfully");
       await loadTypes();
     } catch (err) {
-      console.error("Failed to delete operator type", err);
-      toast.error(err?.response?.data?.message || "Unable to delete operator type.");
+      console.error("Failed to delete worker/employee type", err);
+      toast.error(err?.response?.data?.message || "Unable to delete worker/employee type.");
     } finally {
       setSaving(false);
     }
@@ -119,8 +119,8 @@ export default function OperatorTypeMaster() {
     const cols = [
       { key: 'id', label: 'ID', minWidth: '60px' },
       {
-        key: 'operator_type_name',
-        label: 'Operator Type Name',
+        key: 'worker_employee_type_name',
+        label: 'Worker/Employee Type Name',
         render: (row) => editingId === row.id ? (
           <input
             type="text"
@@ -129,13 +129,13 @@ export default function OperatorTypeMaster() {
             className="border border-slate-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#043464] w-full"
           />
         ) : (
-          <span className="font-semibold text-blue-900">{row.operator_type_name}</span>
+          <span className="font-semibold text-blue-900">{row.worker_employee_type_name}</span>
         )
       }
     ];
 
-    const canUpdate = hasPermission("operator_type", "update");
-    const canDelete = hasPermission("operator_type", "delete");
+    const canUpdate = hasPermission("worker_employee_type", "update");
+    const canDelete = hasPermission("worker_employee_type", "delete");
 
     if (canUpdate || canDelete) {
       cols.push({
@@ -166,7 +166,7 @@ export default function OperatorTypeMaster() {
               <>
                 {canUpdate && (
                   <button
-                    onClick={() => handleStartEdit(row.id, row.operator_type_name)}
+                    onClick={() => handleStartEdit(row.id, row.worker_employee_type_name)}
                     className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#bcccdc] bg-[#f0f4f8] text-[#043464] hover:bg-[#e6ebf0] cursor-pointer"
                     title="Edit"
                   >
@@ -202,17 +202,17 @@ export default function OperatorTypeMaster() {
 
       <main className="flex-1 flex flex-col w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <DataTable
-          tableId="operator_type_master"
-          title="Operator Type Master"
+          tableId="worker_employee_type_master"
+          title="Worker/Employee Type Master"
           data={types}
           columns={columns}
           loading={loading}
-          searchPlaceholder="Search operator types..."
-          actionButton={hasPermission("operator_type", "write") ? (
+          searchPlaceholder="Search worker/employee types..."
+          actionButton={hasPermission("worker_employee_type", "write") ? (
             <button
               onClick={openAddModal}
               className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#043464] text-white hover:bg-[#03274b] transition-colors cursor-pointer shadow-sm hover:shadow"
-              title="Add Operator Type"
+              title="Add Worker/Employee Type"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -237,8 +237,8 @@ export default function OperatorTypeMaster() {
             <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl animate-in zoom-in duration-200">
               <div className="mb-4 flex items-start justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-semibold text-slate-900">Add Operator Type</h2>
-                  <p className="text-sm text-slate-500">Create a new operator type master entry.</p>
+                  <h2 className="text-xl font-semibold text-slate-900">Add Worker/Employee Type</h2>
+                  <p className="text-sm text-slate-500">Create a new worker/employee type master entry.</p>
                 </div>
                 <button
                   type="button"
@@ -252,13 +252,13 @@ export default function OperatorTypeMaster() {
 
               <form className="space-y-4" onSubmit={handleAddType}>
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">Operator Type Name</label>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">Worker/Employee Type Name</label>
                   <input
                     type="text"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
                     className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-[#043464] focus:ring-2 focus:ring-[#043464]/30"
-                    placeholder="Enter operator type name"
+                    placeholder="Enter worker/employee type name"
                     autoFocus
                   />
                 </div>
@@ -275,7 +275,7 @@ export default function OperatorTypeMaster() {
                     disabled={saving}
                     className="rounded-xl bg-[#043464] px-4 py-2 text-sm font-semibold text-white hover:bg-[#03274b] disabled:opacity-60 cursor-pointer"
                   >
-                    {saving ? "Saving..." : "Add Operator Type"}
+                    {saving ? "Saving..." : "Add Worker/Employee Type"}
                   </button>
                 </div>
               </form>

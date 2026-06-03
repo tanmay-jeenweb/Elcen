@@ -1,91 +1,87 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import { getOperators, deleteOperator, toggleOperatorActive } from "../../api/operatorApi";
+import { getWorkerEmployees, deleteWorkerEmployee, toggleWorkerEmployeeActive } from "../../api/workerEmployeeApi";
 import DataTable from "../../components/DataTable";
 import toast from "react-hot-toast";
 import { usePermission } from "../../context/PermissionContext";
 
-export default function OperatorMaster() {
+export default function WorkerEmployeeMaster() {
   const navigate = useNavigate();
-  const [operators, setOperators] = useState([]);
+  const [workers, setWorkers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [showInactive, setShowInactive] = useState(false);
 
   const { hasPermission } = usePermission();
 
-  // ── Data loader ────────────────────────────────────────────────
-  const loadOperators = async () => {
+  const loadWorkers = async () => {
     setLoading(true);
     try {
-      const res = await getOperators(showInactive);
-      setOperators(res.data.data || []);
+      const res = await getWorkerEmployees(showInactive);
+      setWorkers(res.data.data || []);
     } catch (err) {
-      console.error("Failed to load operators", err);
-      toast.error("Unable to load operators. Please try again.");
+      console.error("Failed to load worker/employees", err);
+      toast.error("Unable to load worker/employees. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadOperators();
+    loadWorkers();
   }, [showInactive]);
 
-  // ── Toggle Active ──────────────────────────────────────────────
   const handleToggleActive = async (id, currentActive) => {
     const newState = !currentActive;
-    if (!window.confirm(`Are you sure you want to ${newState ? "activate" : "deactivate"} this operator?`)) return;
+    if (!window.confirm(`Are you sure you want to ${newState ? "activate" : "deactivate"} this worker/employee?`)) return;
     setSaving(true);
     try {
-      await toggleOperatorActive(id, newState);
-      toast.success(`Operator ${newState ? "activated" : "deactivated"}`);
-      loadOperators();
+      await toggleWorkerEmployeeActive(id, newState);
+      toast.success(`Worker/Employee ${newState ? "activated" : "deactivated"}`);
+      loadWorkers();
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to update operator status");
+      toast.error(err?.response?.data?.message || "Failed to update status");
     } finally {
       setSaving(false);
     }
   };
 
-  // ── Delete ─────────────────────────────────────────────────────
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this operator?")) return;
+    if (!window.confirm("Are you sure you want to delete this worker/employee?")) return;
 
     setSaving(true);
     try {
-      await deleteOperator(id);
-      toast.success("Operator deleted successfully");
-      await loadOperators();
+      await deleteWorkerEmployee(id);
+      toast.success("Worker/Employee deleted successfully");
+      await loadWorkers();
     } catch (err) {
-      console.error("Failed to delete operator", err);
-      toast.error(err?.response?.data?.message || "Unable to delete operator.");
+      console.error("Failed to delete worker/employee", err);
+      toast.error(err?.response?.data?.message || "Unable to delete worker/employee.");
     } finally {
       setSaving(false);
     }
   };
 
-  // ── Columns ───────────────────────────────────────────────────
   const columns = useMemo(() => {
-    const canUpdate = hasPermission("operator", "update");
-    const canDelete = hasPermission("operator", "delete");
+    const canUpdate = hasPermission("worker_employee", "update");
+    const canDelete = hasPermission("worker_employee", "delete");
 
     const cols = [
       {
-        key: "operator_code",
+        key: "worker_employee_code",
         label: "Code",
         minWidth: "120px",
         render: (row) => (
-          <span className="font-mono font-semibold text-[#043464]">{row.operator_code}</span>
+          <span className="font-mono font-semibold text-[#043464]">{row.worker_employee_code}</span>
         ),
       },
       {
-        key: "operator_name",
+        key: "worker_employee_name",
         label: "Name",
         minWidth: "160px",
         render: (row) => (
-          <span className="font-semibold text-slate-800">{row.operator_name}</span>
+          <span className="font-semibold text-slate-800">{row.worker_employee_name}</span>
         ),
       },
       {
@@ -102,13 +98,13 @@ export default function OperatorMaster() {
           ),
       },
       {
-        key: "operator_type_name",
+        key: "worker_employee_type_name",
         label: "Type",
         minWidth: "160px",
         render: (row) =>
-          row.operator_type_name ? (
+          row.worker_employee_type_name ? (
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-700 border-indigo-200">
-              {row.operator_type_name}
+              {row.worker_employee_type_name}
             </span>
           ) : (
             <span className="text-slate-400 italic text-xs">—</span>
@@ -166,7 +162,7 @@ export default function OperatorMaster() {
               {/* Edit */}
               {canUpdate && (
                 <button
-                  onClick={() => navigate(`/admin/operators/edit/${row.id}`)}
+                  onClick={() => navigate(`/admin/worker-employees/edit/${row.id}`)}
                   className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#bcccdc] bg-[#f0f4f8] text-[#043464] hover:bg-[#e6ebf0] cursor-pointer"
                   title="Edit"
                 >
@@ -216,19 +212,18 @@ export default function OperatorMaster() {
     return cols;
   }, [hasPermission, saving, navigate]);
 
-  // ── Render ────────────────────────────────────────────────────
   return (
     <div className="flex-1 flex flex-col bg-slate-50 font-sans text-slate-900">
       <Navbar title="ERP Admin" />
 
       <main className="flex-1 flex flex-col w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <DataTable
-          tableId="operator_master"
-          title="Operator Master"
-          data={operators}
+          tableId="worker_employee_master"
+          title="Worker/Employee Master"
+          data={workers}
           columns={columns}
           loading={loading}
-          searchPlaceholder="Search operators..."
+          searchPlaceholder="Search worker/employees..."
           toggleActions={
             <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-600 select-none">
               <div
@@ -247,11 +242,11 @@ export default function OperatorMaster() {
             </label>
           }
           actionButton={
-            hasPermission("operator", "write") && (
+            hasPermission("worker_employee", "write") && (
               <button
-                onClick={() => navigate("/admin/operators/create")}
+                onClick={() => navigate("/admin/worker-employees/create")}
                 className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#043464] text-white hover:bg-[#03274b] transition-colors cursor-pointer shadow-sm hover:shadow"
-                title="Add Operator"
+                title="Add Worker/Employee"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

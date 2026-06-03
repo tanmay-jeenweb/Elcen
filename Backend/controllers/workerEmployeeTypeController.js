@@ -1,36 +1,36 @@
 const {
-    createOperatorType,
-    getAllOperatorTypes,
-    updateOperatorType,
-    deleteOperatorType,
-    getOperatorTypeById
-} = require('../models/operatorTypeModel.js');
+    createWorkerEmployeeType,
+    getAllWorkerEmployeeTypes,
+    updateWorkerEmployeeType,
+    deleteWorkerEmployeeType,
+    getWorkerEmployeeTypeById
+} = require('../models/workerEmployeeTypeModel.js');
 const { createAuditLog } = require('../models/auditLogModel.js');
 
-const addOperatorType = async (req, res) => {
+const addWorkerEmployeeType = async (req, res) => {
     try {
-        const { operatorTypeName } = req.body;
+        const { workerEmployeeTypeName } = req.body;
         const addedBy = req.user.id;
         const deviceId = req.headers["x-device-id"] || req.headers["device-id"] || "Unknown";
 
-        if (!operatorTypeName || !operatorTypeName.trim()) {
+        if (!workerEmployeeTypeName || !workerEmployeeTypeName.trim()) {
             return res.status(400).json({
                 success: false,
-                message: 'Operator type name is required'
+                message: 'Worker/Employee type name is required'
             });
         }
 
-        const operatorType = await createOperatorType(operatorTypeName.trim(), addedBy, deviceId);
+        const workerEmployeeType = await createWorkerEmployeeType(workerEmployeeTypeName.trim(), addedBy, deviceId);
         await createAuditLog(
             addedBy,
             req.user?.name || req.user?.username || 'Unknown',
             deviceId,
-            'Operator Type Master',
+            'Worker/Employee Type Master',
             'created',
             null,
             {
-                id: operatorType.insertId,
-                operator_type_name: operatorTypeName.trim(),
+                id: workerEmployeeType.insertId,
+                worker_employee_type_name: workerEmployeeTypeName.trim(),
                 added_by: addedBy,
                 device_id: deviceId
             }
@@ -38,15 +38,15 @@ const addOperatorType = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            message: 'Operator type added successfully',
-            data: operatorType
+            message: 'Worker/Employee type added successfully',
+            data: workerEmployeeType
         });
     } catch (error) {
-        console.error('Error adding operator type:', error);
+        console.error('Error adding worker/employee type:', error);
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({
                 success: false,
-                message: 'Operator type name already exists'
+                message: 'Worker/Employee type name already exists'
             });
         }
         res.status(500).json({
@@ -56,17 +56,17 @@ const addOperatorType = async (req, res) => {
     }
 };
 
-const getAllOperatorTypesController = async (req, res) => {
+const getAllWorkerEmployeeTypesController = async (req, res) => {
     try {
-        const operatorTypes = await getAllOperatorTypes();
+        const workerEmployeeTypes = await getAllWorkerEmployeeTypes();
 
         res.status(200).json({
             success: true,
-            message: 'Operator types retrieved successfully',
-            data: operatorTypes
+            message: 'Worker/Employee types retrieved successfully',
+            data: workerEmployeeTypes
         });
     } catch (error) {
-        console.error('Error retrieving operator types:', error);
+        console.error('Error retrieving worker/employee types:', error);
         res.status(500).json({
             success: false,
             message: 'Internal server error'
@@ -74,48 +74,48 @@ const getAllOperatorTypesController = async (req, res) => {
     }
 };
 
-const updateOperatorTypeController = async (req, res) => {
+const updateWorkerEmployeeTypeController = async (req, res) => {
     try {
         const { id } = req.params;
-        const { operatorTypeName } = req.body;
+        const { workerEmployeeTypeName } = req.body;
 
-        if (!operatorTypeName || !operatorTypeName.trim()) {
+        if (!workerEmployeeTypeName || !workerEmployeeTypeName.trim()) {
             return res.status(400).json({
                 success: false,
-                message: 'Operator type name is required'
+                message: 'Worker/Employee type name is required'
             });
         }
 
         const deviceId = req.headers['x-device-id'] || req.headers['device-id'] || 'Unknown';
-        const beforeData = await getOperatorTypeById(id);
+        const beforeData = await getWorkerEmployeeTypeById(id);
         if (!beforeData) {
-            return res.status(404).json({ success: false, message: 'Operator type not found' });
+            return res.status(404).json({ success: false, message: 'Worker/Employee type not found' });
         }
 
-        await updateOperatorType(id, operatorTypeName.trim());
+        await updateWorkerEmployeeType(id, workerEmployeeTypeName.trim());
         await createAuditLog(
             req.user?.id,
             req.user?.name || req.user?.username || 'Unknown',
             deviceId,
-            'Operator Type Master',
+            'Worker/Employee Type Master',
             'updated',
             beforeData,
             {
                 ...beforeData,
-                operator_type_name: operatorTypeName.trim()
+                worker_employee_type_name: workerEmployeeTypeName.trim()
             }
         );
 
         res.status(200).json({
             success: true,
-            message: 'Operator type updated successfully'
+            message: 'Worker/Employee type updated successfully'
         });
     } catch (error) {
-        console.error('Error updating operator type:', error);
+        console.error('Error updating worker/employee type:', error);
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({
                 success: false,
-                message: 'Operator type name already exists'
+                message: 'Worker/Employee type name already exists'
             });
         }
         res.status(500).json({
@@ -125,22 +125,22 @@ const updateOperatorTypeController = async (req, res) => {
     }
 };
 
-const deleteOperatorTypeController = async (req, res) => {
+const deleteWorkerEmployeeTypeController = async (req, res) => {
     try {
         const { id } = req.params;
 
         const deviceId = req.headers['x-device-id'] || req.headers['device-id'] || 'Unknown';
-        const beforeData = await getOperatorTypeById(id);
+        const beforeData = await getWorkerEmployeeTypeById(id);
         if (!beforeData) {
-            return res.status(404).json({ success: false, message: 'Operator type not found' });
+            return res.status(404).json({ success: false, message: 'Worker/Employee type not found' });
         }
 
-        await deleteOperatorType(id);
+        await deleteWorkerEmployeeType(id);
         await createAuditLog(
             req.user?.id,
             req.user?.name || req.user?.username || 'Unknown',
             deviceId,
-            'Operator Type Master',
+            'Worker/Employee Type Master',
             'deleted',
             beforeData,
             null
@@ -148,10 +148,10 @@ const deleteOperatorTypeController = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Operator type deleted successfully'
+            message: 'Worker/Employee type deleted successfully'
         });
     } catch (error) {
-        console.error('Error deleting operator type:', error);
+        console.error('Error deleting worker/employee type:', error);
         res.status(500).json({
             success: false,
             message: 'Internal server error'
@@ -160,8 +160,8 @@ const deleteOperatorTypeController = async (req, res) => {
 };
 
 module.exports = {
-    addOperatorType,
-    getAllOperatorTypesController,
-    updateOperatorTypeController,
-    deleteOperatorTypeController
+    addWorkerEmployeeType,
+    getAllWorkerEmployeeTypesController,
+    updateWorkerEmployeeTypeController,
+    deleteWorkerEmployeeTypeController
 };

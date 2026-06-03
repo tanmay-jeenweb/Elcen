@@ -30,10 +30,10 @@ import OrganizationDetails from "./pages/admin/organization/OrganizationDetails"
 import Reports from "./pages/Reports";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// Operator & Process Masters
-import OperatorMaster from "./pages/Operator/OperatorMaster";
-import OperatorTypeMaster from "./pages/Operator/OperatorTypeMaster";
-import CreateOperator from "./pages/Operator/CreateOperator";
+// Worker/Employee & Process Masters
+import WorkerEmployeeMaster from "./pages/WorkerEmployee/WorkerEmployeeMaster";
+import WorkerEmployeeTypeMaster from "./pages/WorkerEmployee/WorkerEmployeeTypeMaster";
+import CreateWorkerEmployee from "./pages/WorkerEmployee/CreateWorkerEmployee";
 import ProcessMaster from "./pages/admin/process/ProcessMaster";
 
 export default function AppRoutes() {
@@ -192,20 +192,20 @@ export default function AppRoutes() {
                 />
             </Route>
 
-            {/* Operator Master Routes */}
-            <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="operator" requiredAction="read" />}>
-                <Route path="/admin/operators" element={<OperatorMaster />} />
+            {/* Worker/Employee Master Routes */}
+            <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="worker_employee" requiredAction="read" />}>
+                <Route path="/admin/worker-employees" element={<WorkerEmployeeMaster />} />
             </Route>
-            <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="operator" requiredAction="write" />}>
-                <Route path="/admin/operators/create" element={<CreateOperator />} />
+            <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="worker_employee" requiredAction="write" />}>
+                <Route path="/admin/worker-employees/create" element={<CreateWorkerEmployee />} />
             </Route>
-            <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="operator" requiredAction="update" />}>
-                <Route path="/admin/operators/edit/:id" element={<CreateOperator />} />
+            <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="worker_employee" requiredAction="update" />}>
+                <Route path="/admin/worker-employees/edit/:id" element={<CreateWorkerEmployee />} />
             </Route>
 
-            {/* Operator Type Master Routes */}
-            <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="operator_type" requiredAction="read" />}>
-                <Route path="/admin/operator-types" element={<OperatorTypeMaster />} />
+            {/* Worker/Employee Type Master Routes */}
+            <Route element={<ProtectedRoute allowedRole="admin" requiredMaster="worker_employee_type" requiredAction="read" />}>
+                <Route path="/admin/worker-employee-types" element={<WorkerEmployeeTypeMaster />} />
             </Route>
 
             {/* Process Master Routes */}

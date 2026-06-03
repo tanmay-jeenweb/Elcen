@@ -28,6 +28,8 @@ export default function Reports() {
       { value: "User Master", label: "User Master" },
       { value: "User Type Master", label: "User Type Master" },
       { value: "Vendor Master", label: "Vendor Master" },
+      { value: "Worker/Employee Master", label: "Worker/Employee Master" },
+      { value: "Worker/Employee Type Master", label: "Worker/Employee Type Master" },
     ],
     [],
   );
@@ -98,9 +100,9 @@ export default function Reports() {
       record.material_group_name ||
       record.materialName ||
       record.material_name ||
-      record.operatorName ||
-      record.operator_name ||
-      record.operator_type_name ||
+      record.workerEmployeeName ||
+      record.worker_employee_name ||
+      record.worker_employee_type_name ||
       record.job_party_type_name ||
       record.job_party_name ||
       record.partyName ||
@@ -152,14 +154,14 @@ export default function Reports() {
       before.material_name ||
       after.material_group_name ||
       before.material_group_name ||
-      after.operatorName ||
-      before.operatorName ||
-      after.operator_name ||
-      before.operator_name ||
+      after.workerEmployeeName ||
+      before.workerEmployeeName ||
+      after.worker_employee_name ||
+      before.worker_employee_name ||
       after.reason_type ||
       before.reason_type ||
-      after.operator_type_name ||
-      before.operator_type_name ||
+      after.worker_employee_type_name ||
+      before.worker_employee_type_name ||
       before.job_party_type_name ||
       after.job_party_type_name ||
       before.partyName ||
